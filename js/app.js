@@ -5,9 +5,19 @@
 
 // The image/sprite for our enemies, this uses
 // a helper we've provided to easily load images
-
-class Enemy {
+class Entity {
   constructor() {
+    this.x = 2;
+    this.y = 4;
+  }
+  render() {
+    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+  }
+}
+
+class Enemy extends Entity {
+  constructor() {
+    super();
     this.sprite = "images/enemy-bug.png";
     this.x = 0;
     this.y = 0;
@@ -20,15 +30,31 @@ class Enemy {
     // which will ensure the game runs at the same speed for
     // all computers.
   }
-  render() {
-    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
-  }
 }
 
 // Now write your own player class
 // This class requires an update(), render() and
 // a handleInput() method.
 
+class Player extends Entity {
+  constructor() {
+    super();
+    this.sprite = "images/char-boy.png";
+    this.x = 0;
+    this.y = 0;
+  }
+  handleInput(inputKey) {
+    if (inputKey === "up") {
+      this.x += 1;
+    } else if (inputKey === "down") {
+      this.x -= 1;
+    } else if (inputKey === "left") {
+      this.y -= 1;
+    } else if (inputKey === "right") {
+      this.y += 1;
+    }
+  }
+}
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
 // Place the player object in a variable called player
@@ -45,3 +71,6 @@ document.addEventListener("keyup", function(e) {
 
   player.handleInput(allowedKeys[e.keyCode]);
 });
+
+const player = new Player();
+const enemy = new Enemy();
