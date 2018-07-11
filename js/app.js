@@ -40,18 +40,33 @@ class Player extends Entity {
   constructor() {
     super();
     this.sprite = "images/char-boy.png";
-    this.x = 0;
-    this.y = 0;
+    this.dx = 101;
+    this.dy = 83;
+    this.x = this.dx * 2;
+    this.y = this.dy * 5 - 20;
   }
   handleInput(inputKey) {
-    if (inputKey === "up") {
-      this.x += 1;
-    } else if (inputKey === "down") {
-      this.x -= 1;
-    } else if (inputKey === "left") {
-      this.y -= 1;
-    } else if (inputKey === "right") {
-      this.y += 1;
+    switch (inputKey) {
+      case "up":
+        if (this.y > -20) {
+          this.y -= this.dy;
+        }
+        break;
+      case "down":
+        if (this.y < 395) {
+          this.y += this.dy;
+        }
+        break;
+      case "left":
+        if (this.x > 0) {
+          this.x -= this.dx;
+        }
+        break;
+      case "right":
+        if (this.x < 404) {
+          this.x += this.dx;
+          break;
+        }
     }
   }
 }
