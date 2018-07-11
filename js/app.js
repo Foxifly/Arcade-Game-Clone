@@ -33,7 +33,11 @@ class Enemy extends Entity {
   // Update the enemy's position, required method for game
   // Parameter: dt, a time delta between ticks
   update(dt) {
-    this.x += dt * this.speed * 101;
+    if (this.x >= 500) {
+      this.x = -100;
+    } else {
+      this.x += dt * this.speed * 75;
+    }
   }
 }
 
@@ -45,7 +49,7 @@ function generateEnemy() {
     var speed = Math.floor(Math.random() * 6 + 1);
     let yRandom = Math.floor(Math.random() * 3) + 1;
     let y = 83 * yRandom - 20;
-    var x = 0;
+    var x = -100;
     allEnemies.push(new Enemy(x, y, speed));
   }
 }
