@@ -7,20 +7,27 @@
 // a helper we've provided to easily load images
 class Entity {
   constructor() {
-    this.x = 2;
-    this.y = 4;
+    this.x = 0;
+    this.y = 0;
+    this.dx = 101;
+    this.dy = 83;
   }
   render() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
   }
 }
 
+/*
+We want range of X values to be between 0 and this.dx*4
+We want range of Y values to be between this.dy - 20 and this.dy * 3 - 20;
+*/
+
 class Enemy extends Entity {
   constructor() {
     super();
     this.sprite = "images/enemy-bug.png";
     this.x = 0;
-    this.y = 0;
+    this.y = this.randomizeStartingLocation();
     this.speed = 5;
   }
   // Update the enemy's position, required method for game
@@ -29,6 +36,13 @@ class Enemy extends Entity {
     // You should multiply any movement by the dt parameter
     // which will ensure the game runs at the same speed for
     // all computers.
+  }
+  randomizeStartingLocation() {
+    let yRandom = Math.floor(Math.random() * 3) + 1;
+    console.log(yRandom);
+    console.log(this.dy);
+    this.y = this.dy * yRandom - 20;
+    return this.y;
   }
 }
 
@@ -40,8 +54,6 @@ class Player extends Entity {
   constructor() {
     super();
     this.sprite = "images/char-boy.png";
-    this.dx = 101;
-    this.dy = 83;
     this.x = this.dx * 2;
     this.y = this.dy * 5 - 20;
   }
@@ -65,8 +77,10 @@ class Player extends Entity {
       case "right":
         if (this.x < 404) {
           this.x += this.dx;
-          break;
         }
+        break;
+      default:
+        break;
     }
   }
 }
