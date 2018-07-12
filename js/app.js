@@ -63,18 +63,6 @@ function checkCollisions() {
   });
 }
 
-/* 10 levels
-1 - 3 bugs | speed 1-4
-2 - 3 bugs | speed 1-5
-3 - 4 bugs | speed 1 - 6
-4 - 4 bugs | speed 2-6
-5 - 5 bugs | speed 2-7
-6 - 6 bugs | speed 3 - 7
-7 - 7 bugs | speed 4 - 7
-8 - 8 bugs | speed 4-8
-9 - 9 bugs | speed 4-9
-10 - 10 bugs | speed 5-9
-*/
 function generateEnemy(level) {
   let yRandom = Math.floor(Math.random() * 3) + 1;
   let y = 83 * yRandom - 20;
@@ -151,7 +139,9 @@ function generateNewEnemy() {
   allEnemies.push(new Enemy(x, y, speed));
 }
 
-function clearEnemies() {}
+function clearEnemies() {
+  allEnemies = [];
+}
 // Now write your own player class
 // This class requires an update(), render() and
 // a handleInput() method.
@@ -168,26 +158,47 @@ class Player extends Entity {
       case "up":
         if (this.y > -20) {
           this.y -= this.dy;
+          this.handleComplete();
         }
         break;
       case "down":
         if (this.y < 395) {
           this.y += this.dy;
+          this.handleComplete();
         }
         break;
       case "left":
         if (this.x > 0) {
           this.x -= this.dx;
+          this.handleComplete();
         }
         break;
       case "right":
         if (this.x < 404) {
           this.x += this.dx;
+          this.handleComplete();
         }
         break;
       default:
         break;
     }
+  }
+  handleComplete() {
+    if (this.y === -20) {
+      this.reset();
+      clearEnemies();
+      if (level < 10) {
+        level++;
+        generateEnemy(level);
+      } else if (level === 10) {
+        generateEnemy(level);
+        alert("WinnerWinner");
+      }
+    }
+  }
+  reset() {
+    this.x = this.dx * 2;
+    this.y = this.dy * 5 - 20;
   }
 }
 
