@@ -34,9 +34,11 @@ class Enemy extends Entity {
   // Parameter: dt, a time delta between ticks
   update(dt) {
     if (this.x >= 500) {
-      this.x = -100;
+      let thisIndex = allEnemies.indexOf(this);
+      allEnemies.splice(thisIndex, 1);
+      generateNewEnemy();
     } else {
-      this.x += dt * this.speed * 75;
+      this.x += Math.floor(dt * this.speed * 75);
     }
   }
 }
@@ -44,16 +46,40 @@ class Enemy extends Entity {
 let allEnemies = [];
 generateEnemy();
 
+function checkCollisions() {
+  allEnemies.forEach(enemyBug => {
+    let aRange = player.x - 50;
+    let bRange = player.x + 40;
+    if (
+      enemyBug.x >= aRange &&
+      enemyBug.x <= bRange &&
+      enemyBug.y === player.y
+    ) {
+      player.x = player.dx * 2;
+      player.y = player.dy * 5 - 20;
+    }
+  });
+}
+
 function generateEnemy() {
-  for (var i = 0; i < 5; i++) {
-    var speed = Math.floor(Math.random() * 6 + 1);
+  for (let i = 0; i < 5; i++) {
+    let speed = Math.floor(Math.random() * 6 + 1);
     let yRandom = Math.floor(Math.random() * 3) + 1;
     let y = 83 * yRandom - 20;
-    var x = -100;
+    let x = -100;
     allEnemies.push(new Enemy(x, y, speed));
   }
 }
 
+function generateNewEnemy() {
+  let speed = Math.floor(Math.random() * 6 + 1);
+  let yRandom = Math.floor(Math.random() * 3) + 1;
+  let y = 83 * yRandom - 20;
+  let x = -100;
+  allEnemies.push(new Enemy(x, y, speed));
+}
+
+function clearEnemies() {}
 // Now write your own player class
 // This class requires an update(), render() and
 // a handleInput() method.
