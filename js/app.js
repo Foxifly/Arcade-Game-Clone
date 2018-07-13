@@ -78,6 +78,23 @@ function checkCollisions() {
   });
 }
 
+class Gem extends Entity {
+  constructor() {
+    super();
+    this.x = 100;
+    this.y = 100;
+    this.sprite = this.generateItem();
+  }
+  generateItem() {
+    let itemSprites = [
+      "images/bluegem.png",
+      "images/orangegem.png",
+      "images/greengem.png"
+    ];
+    return itemSprites[Math.floor(Math.random() * itemSprites.length)];
+  }
+}
+
 function generateEnemy(level) {
   let x = -100;
   let levelP = document.querySelector(".level");
@@ -317,4 +334,5 @@ document.addEventListener("keyup", function(e) {
   player.handleInput(allowedKeys[e.keyCode]);
 });
 const player = new Player();
+const gem = new Gem();
 startGame();
