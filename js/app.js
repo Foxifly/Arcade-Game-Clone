@@ -273,7 +273,7 @@ class Player extends Entity {
         <span class="close"><i class="fa fa-times"></i></span>
         <div class="modal-text">
           <h2 class="lose">Out Of Lives</h2>
-          <h3>You are out of lives, please try again. </h3>
+          <h3>You made it to Level ${level}.</h3>
         </div>
         <button class="try-again">Try Again</button>
         `;
@@ -289,8 +289,8 @@ class Player extends Entity {
       <div class="modal-content">
         <span class="close"><i class="fa fa-times"></i></span>
         <div class="modal-text">
-          <h2 class="win">Winner winnner chicken dinner</h2>
-          <h3>Win Win win win. </h3>
+          <h2 class="win">Congratulations</h2>
+          <h3>You made it to level 10 with ${lives} lives left.</h3>
         </div>
         <button class="try-again">Play Again</button>
         `;
