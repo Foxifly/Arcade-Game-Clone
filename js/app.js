@@ -79,69 +79,99 @@ function checkCollisions() {
 }
 
 function generateEnemy(level) {
-  let yRandom = Math.floor(Math.random() * 3) + 1;
-  let y = 83 * yRandom - 20;
   let x = -100;
+  let levelP = document.querySelector(".level");
+
   switch (level) {
     case 1:
       for (let i = 0; i < 3; i++) {
+        let yRandom = Math.floor(Math.random() * 3) + 1;
+        let y = 83 * yRandom - 20;
         let speed = Math.floor(Math.random() * 4 + 1);
         allEnemies.push(new Enemy(x, y, speed));
       }
+      levelP.innerText = "Level 1";
       break;
     case 2:
       for (let i = 0; i < 3; i++) {
+        let yRandom = Math.floor(Math.random() * 3) + 1;
+        let y = 83 * yRandom - 20;
         let speed = Math.floor(Math.random() * 5 + 1);
         allEnemies.push(new Enemy(x, y, speed));
       }
+      levelP.innerText = "Level 2";
       break;
     case 3:
       for (let i = 0; i < 4; i++) {
+        let yRandom = Math.floor(Math.random() * 3) + 1;
+        let y = 83 * yRandom - 20;
         let speed = Math.floor(Math.random() * 6 + 1);
         allEnemies.push(new Enemy(x, y, speed));
       }
+      levelP.innerText = "Level 3";
       break;
     case 4:
       for (let i = 0; i < 4; i++) {
+        let yRandom = Math.floor(Math.random() * 3) + 1;
+        let y = 83 * yRandom - 20;
         let speed = Math.floor(Math.random() * 6 + 2);
         allEnemies.push(new Enemy(x, y, speed));
       }
+      levelP.innerText = "Level 4";
       break;
     case 5:
       for (let i = 0; i < 5; i++) {
+        let yRandom = Math.floor(Math.random() * 3) + 1;
+        let y = 83 * yRandom - 20;
         let speed = Math.floor(Math.random() * 7 + 2);
         allEnemies.push(new Enemy(x, y, speed));
       }
+      levelP.innerText = "Level 5";
       break;
     case 6:
       for (let i = 0; i < 6; i++) {
+        let yRandom = Math.floor(Math.random() * 3) + 1;
+        let y = 83 * yRandom - 20;
         let speed = Math.floor(Math.random() * 7 + 3);
         allEnemies.push(new Enemy(x, y, speed));
       }
+      levelP.innerText = "Level 6";
       break;
     case 7:
       for (let i = 0; i < 7; i++) {
+        let yRandom = Math.floor(Math.random() * 3) + 1;
+        let y = 83 * yRandom - 20;
         let speed = Math.floor(Math.random() * 7 + 4);
         allEnemies.push(new Enemy(x, y, speed));
       }
+      levelP.innerText = "Level 7";
       break;
     case 8:
       for (let i = 0; i < 8; i++) {
+        let yRandom = Math.floor(Math.random() * 3) + 1;
+        let y = 83 * yRandom - 20;
         let speed = Math.floor(Math.random() * 8 + 4);
         allEnemies.push(new Enemy(x, y, speed));
       }
+      levelP.innerText = "Level 8";
       break;
     case 9:
       for (let i = 0; i < 9; i++) {
+        let yRandom = Math.floor(Math.random() * 3) + 1;
+        let y = 83 * yRandom - 20;
         let speed = Math.floor(Math.random() * 9 + 4);
         allEnemies.push(new Enemy(x, y, speed));
       }
+      levelP.innerText = "Level 9";
       break;
     case 10:
       for (let i = 0; i < 10; i++) {
+        let yRandom = Math.floor(Math.random() * 3) + 1;
+        let y = 83 * yRandom - 20;
         let speed = Math.floor(Math.random() * 10 + 5);
         allEnemies.push(new Enemy(x, y, speed));
       }
+      levelP.innerText = "Level 10";
       break;
   }
 }
