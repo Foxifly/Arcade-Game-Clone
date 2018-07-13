@@ -81,8 +81,8 @@ function checkCollisions() {
 class Gem extends Entity {
   constructor() {
     super();
-    this.x = 100;
-    this.y = 100;
+    this.x = player.dx * 1;
+    this.y = player.dy * 5 - 20;
     this.sprite = this.generateItem();
   }
   generateItem() {
