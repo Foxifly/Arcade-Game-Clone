@@ -8,6 +8,7 @@
 let level = 1;
 let lives = 3;
 let lifeInnerHTML = ``;
+let allowMove = true;
 
 class Entity {
   constructor() {
@@ -31,6 +32,7 @@ function newGame() {
   clearEnemies();
   generateEnemy(level);
   player.livesTracker();
+  allowMove = true;
 }
 /*
 We want range of X values to be between 0 and this.dx*4
@@ -48,7 +50,7 @@ class Enemy extends Entity {
   // Update the enemy's position, required method for game
   // Parameter: dt, a time delta between ticks
   update(dt) {
-    if (this.x >= 500) {
+    if (this.x >= 700) {
       let thisIndex = allEnemies.indexOf(this);
       allEnemies.splice(thisIndex, 1);
       generateNewEnemy();
@@ -81,8 +83,10 @@ function checkCollisions() {
 class Gem extends Entity {
   constructor() {
     super();
-    this.x = player.dx * 1;
-    this.y = player.dy * 5 - 20;
+    //this.x = player.dx * 1;
+    //this.y = player.dy * 5 - 20;
+    this.x = -100;
+    this.y = -100;
     this.sprite = this.generateItem();
   }
   generateItem() {
@@ -212,37 +216,39 @@ class Player extends Entity {
   constructor() {
     super();
     this.sprite = "images/char-boy.png";
-    this.x = this.dx * 2;
+    this.x = this.dx * 3;
     this.y = this.dy * 5 - 20;
   }
   handleInput(inputKey) {
-    switch (inputKey) {
-      case "up":
-        if (this.y > -20) {
-          this.y -= this.dy;
-          this.handleComplete();
-        }
-        break;
-      case "down":
-        if (this.y < 395) {
-          this.y += this.dy;
-          this.handleComplete();
-        }
-        break;
-      case "left":
-        if (this.x > 0) {
-          this.x -= this.dx;
-          this.handleComplete();
-        }
-        break;
-      case "right":
-        if (this.x < 404) {
-          this.x += this.dx;
-          this.handleComplete();
-        }
-        break;
-      default:
-        break;
+    if (allowMove === true) {
+      switch (inputKey) {
+        case "up":
+          if (this.y > -20) {
+            this.y -= this.dy;
+            this.handleComplete();
+          }
+          break;
+        case "down":
+          if (this.y < 395) {
+            this.y += this.dy;
+            this.handleComplete();
+          }
+          break;
+        case "left":
+          if (this.x > 0) {
+            this.x -= this.dx;
+            this.handleComplete();
+          }
+          break;
+        case "right":
+          if (this.x < 604) {
+            this.x += this.dx;
+            this.handleComplete();
+          }
+          break;
+        default:
+          break;
+      }
     }
   }
   handleComplete() {
@@ -254,6 +260,7 @@ class Player extends Entity {
         generateEnemy(level);
       } else if (level === 10) {
         generateEnemy(level);
+        clearEnemies();
         this.handleModal();
       }
     }
@@ -267,6 +274,8 @@ class Player extends Entity {
       `;
       }
     } else {
+      clearEnemies();
+      allowMove = false;
       this.handleModal();
     }
 
@@ -323,8 +332,10 @@ class Player extends Entity {
 
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method. You don't need to modify this.
-document.addEventListener("keyup", function(e) {
-  var allowedKeys = {
+document.addEventListener("keyup", keyupListener);
+
+function keyupListener(e) {
+  let allowedKeys = {
     37: "left",
     38: "up",
     39: "right",
@@ -332,7 +343,7 @@ document.addEventListener("keyup", function(e) {
   };
 
   player.handleInput(allowedKeys[e.keyCode]);
-});
+}
 const player = new Player();
 const gem = new Gem();
 startGame();
