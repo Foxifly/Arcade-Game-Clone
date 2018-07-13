@@ -24,6 +24,14 @@ class Entity {
 function startGame() {
   player.livesTracker();
 }
+function newGame() {
+  lives = 3;
+  level = 1;
+  player.reset();
+  clearEnemies();
+  generateEnemy(level);
+  player.livesTracker();
+}
 /*
 We want range of X values to be between 0 and this.dx*4
 We want range of Y values to be between this.dy - 20 and this.dy * 3 - 20;
@@ -243,6 +251,7 @@ class Player extends Entity {
       let tryAgain = document.getElementsByClassName("try-again")[0];
       tryAgain.onclick = () => {
         modal.style.display = "none";
+        newGame();
       };
     } else if (level == 10 && lives > 0) {
       modal.style.display = "flex";
@@ -259,6 +268,7 @@ class Player extends Entity {
       let tryAgain = document.getElementsByClassName("try-again")[0];
       tryAgain.onclick = () => {
         modal.style.display = "none";
+        newGame();
       };
     }
   }
