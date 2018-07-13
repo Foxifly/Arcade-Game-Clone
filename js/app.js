@@ -9,25 +9,6 @@ let level = 1;
 let lives = 3;
 let lifeInnerHTML = ``;
 
-function livesTracker() {
-  if (lives > 0) {
-    for (let i = lives; i > 0; i--) {
-      lifeInnerHTML += `
-    <div class="life-heart"><img class="heart-image" alt="heart icon" src="images/Heart.png"></div>
-    `;
-    }
-  } else {
-    alert("game over");
-  }
-
-  lifeUpdater();
-  lifeInnerHTML = "";
-}
-function lifeUpdater() {
-  let livesDiv = document.querySelector(".lives-container");
-  livesDiv.innerHTML = lifeInnerHTML;
-}
-
 class Entity {
   constructor() {
     this.x = 0;
@@ -40,6 +21,9 @@ class Entity {
   }
 }
 
+function startGame() {
+  player.livesTracker();
+}
 /*
 We want range of X values to be between 0 and this.dx*4
 We want range of Y values to be between this.dy - 20 and this.dy * 3 - 20;
@@ -81,7 +65,7 @@ function checkCollisions() {
       player.x = player.dx * 2;
       player.y = player.dy * 5 - 20;
       lives--;
-      livesTracker();
+      player.livesTracker();
     }
   });
 }
@@ -90,7 +74,6 @@ function generateEnemy(level) {
   let yRandom = Math.floor(Math.random() * 3) + 1;
   let y = 83 * yRandom - 20;
   let x = -100;
-  livesTracker();
   switch (level) {
     case 1:
       for (let i = 0; i < 3; i++) {
@@ -220,6 +203,27 @@ class Player extends Entity {
       }
     }
   }
+
+  livesTracker() {
+    console.log("1");
+    if (lives > 0) {
+      for (let i = lives; i > 0; i--) {
+        lifeInnerHTML += `
+      <div class="life-heart"><img class="heart-image" alt="heart icon" src="images/Heart.png"></div>
+      `;
+      }
+    } else {
+      alert("game over");
+    }
+
+    this.lifeUpdater();
+    lifeInnerHTML = "";
+  }
+  lifeUpdater() {
+    console.log("2");
+    let livesDiv = document.querySelector(".lives-container");
+    livesDiv.innerHTML = lifeInnerHTML;
+  }
   reset() {
     this.x = this.dx * 2;
     this.y = this.dy * 5 - 20;
@@ -239,3 +243,4 @@ document.addEventListener("keyup", function(e) {
   player.handleInput(allowedKeys[e.keyCode]);
 });
 const player = new Player();
+startGame();
