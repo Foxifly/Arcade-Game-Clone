@@ -10,15 +10,19 @@ let lives = 3;
 let lifeInnerHTML = ``;
 
 function livesTracker() {
-  for (let i = lives; i > 0; i--) {
-    lifeInnerHTML += `
-    <div class="life-heart"><img src="images/Heart.png"</div>
+  if (lives > 0) {
+    for (let i = lives; i > 0; i--) {
+      lifeInnerHTML += `
+    <div class="life-heart"><img class="heart-image" alt="heart icon" src="images/Heart.png"></div>
     `;
+    }
+  } else {
+    alert("game over");
   }
+
   lifeUpdater();
   lifeInnerHTML = "";
 }
-
 function lifeUpdater() {
   let livesDiv = document.querySelector(".lives-container");
   livesDiv.innerHTML = lifeInnerHTML;
@@ -86,6 +90,7 @@ function generateEnemy(level) {
   let yRandom = Math.floor(Math.random() * 3) + 1;
   let y = 83 * yRandom - 20;
   let x = -100;
+  livesTracker();
   switch (level) {
     case 1:
       for (let i = 0; i < 3; i++) {
