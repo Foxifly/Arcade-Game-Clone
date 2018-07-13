@@ -199,7 +199,7 @@ class Player extends Entity {
         generateEnemy(level);
       } else if (level === 10) {
         generateEnemy(level);
-        alert("WinnerWinner");
+        this.handleModal();
       }
     }
   }
@@ -212,7 +212,7 @@ class Player extends Entity {
       `;
       }
     } else {
-      alert("game over");
+      this.handleModal();
     }
 
     this.lifeUpdater();
@@ -226,26 +226,44 @@ class Player extends Entity {
     this.x = this.dx * 2;
     this.y = this.dy * 5 - 20;
   }
+  handleModal() {
+    let modal = document.querySelector(".modal");
+    if (lives == 0 && level != 10) {
+      modal.style.display = "flex";
+      modal.innerHTML = `
+      <div class="modal-content">
+        <span class="close"><i class="fa fa-times"></i></span>
+        <div class="modal-text">
+          <h2 class="lose">Out Of Lives</h2>
+          <h3>You are out of lives, please try again. </h3>
+        </div>
+        <button class="try-again">Try Again</button>
+        `;
+
+      let tryAgain = document.getElementsByClassName("try-again")[0];
+      tryAgain.onclick = () => {
+        modal.style.display = "none";
+      };
+    } else if (level == 10 && lives > 0) {
+      modal.style.display = "flex";
+      modal.innerHTML = `
+      <div class="modal-content">
+        <span class="close"><i class="fa fa-times"></i></span>
+        <div class="modal-text">
+          <h2 class="win">Winner winnner chicken dinner</h2>
+          <h3>Win Win win win. </h3>
+        </div>
+        <button class="try-again">Play Again</button>
+        `;
+
+      let tryAgain = document.getElementsByClassName("try-again")[0];
+      tryAgain.onclick = () => {
+        modal.style.display = "none";
+      };
+    }
+  }
 }
 
-const handleModal = () => {
-  let modal = document.querySelector(".modal");
-  modal.style.display = "flex";
-  modal.innerHTML = `
-  <div class="modal-content">
-    <span class="close"><i class="fa fa-times"></i></span>
-    <div class="modal-text">
-      <h2 class="lose">Out Of Lives</h2>
-      <h3>You are out of lives, please try again. </h3>
-    </div>
-    <button class="try-again">Try Again</button>
-    `;
-
-  let tryAgain = document.getElementsByClassName("try-again")[0];
-  tryAgain.onclick = () => {
-    modal.style.display = "none";
-  };
-};
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method. You don't need to modify this.
 document.addEventListener("keyup", function(e) {
