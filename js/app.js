@@ -6,6 +6,23 @@
 // The image/sprite for our enemies, this uses
 // a helper we've provided to easily load images
 let level = 1;
+let lives = 3;
+let lifeInnerHTML = ``;
+
+function livesTracker() {
+  for (let i = lives; i > 0; i--) {
+    lifeInnerHTML += `
+    <div class="life-heart"><img src="images/Heart.png"</div>
+    `;
+  }
+  lifeUpdater();
+  lifeInnerHTML = "";
+}
+
+function lifeUpdater() {
+  let livesDiv = document.querySelector(".lives-container");
+  livesDiv.innerHTML = lifeInnerHTML;
+}
 
 class Entity {
   constructor() {
@@ -59,6 +76,8 @@ function checkCollisions() {
     ) {
       player.x = player.dx * 2;
       player.y = player.dy * 5 - 20;
+      lives--;
+      livesTracker();
     }
   });
 }
