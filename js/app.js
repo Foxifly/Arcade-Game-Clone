@@ -205,7 +205,6 @@ class Player extends Entity {
   }
 
   livesTracker() {
-    console.log("1");
     if (lives > 0) {
       for (let i = lives; i > 0; i--) {
         lifeInnerHTML += `
@@ -220,7 +219,6 @@ class Player extends Entity {
     lifeInnerHTML = "";
   }
   lifeUpdater() {
-    console.log("2");
     let livesDiv = document.querySelector(".lives-container");
     livesDiv.innerHTML = lifeInnerHTML;
   }
@@ -230,6 +228,24 @@ class Player extends Entity {
   }
 }
 
+const handleModal = () => {
+  let modal = document.querySelector(".modal");
+  modal.style.display = "flex";
+  modal.innerHTML = `
+  <div class="modal-content">
+    <span class="close"><i class="fa fa-times"></i></span>
+    <div class="modal-text">
+      <h2 class="lose">Out Of Lives</h2>
+      <h3>You are out of lives, please try again. </h3>
+    </div>
+    <button class="try-again">Try Again</button>
+    `;
+
+  let tryAgain = document.getElementsByClassName("try-again")[0];
+  tryAgain.onclick = () => {
+    modal.style.display = "none";
+  };
+};
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method. You don't need to modify this.
 document.addEventListener("keyup", function(e) {
