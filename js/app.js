@@ -42,7 +42,7 @@ We want range of Y values to be between this.dy - 20 and this.dy * 3 - 20;
 class Enemy extends Entity {
   constructor(x, y, speed) {
     super();
-    this.sprite = "images/enemy-bug.png";
+    this.sprite = "images/octopus.png";
     this.x = x;
     this.y = y;
     this.speed = speed;
@@ -72,7 +72,7 @@ function checkCollisions() {
       enemyBug.x <= bRange &&
       enemyBug.y === player.y
     ) {
-      player.x = player.dx * 2;
+      player.x = player.dx * 3;
       player.y = player.dy * 5 - 20;
       lives--;
       player.livesTracker();
@@ -287,7 +287,7 @@ class Player extends Entity {
     livesDiv.innerHTML = lifeInnerHTML;
   }
   reset() {
-    this.x = this.dx * 2;
+    this.x = this.dx * 3;
     this.y = this.dy * 5 - 20;
   }
   handleModal() {
