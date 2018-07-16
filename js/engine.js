@@ -111,8 +111,8 @@ var Engine = (function(global) {
         "images/water-three.png", // Row 1 of 3 of stone
         "images/water-two.png", // Row 2 of 3 of stone
         "images/water-one.png", // Row 3 of 3 of stone
-        "images/grass-block.png", // Row 1 of 2 of grass
-        "images/grass-block.png" // Row 2 of 2 of grass
+        "images/ocean-bottop.png", // Row 1 of 2 of grass
+        "images/ocean-bottom.png" // Row 2 of 2 of grass
       ],
       numRows = 6,
       numCols = 10,
@@ -182,7 +182,9 @@ var Engine = (function(global) {
     "images/octopus.png",
     "images/water-one.png",
     "images/water-two.png",
-    "images/water-three.png"
+    "images/water-three.png",
+    "images/ocean-bottom.png",
+    "images/ocean-bottop.png"
   ]);
   Resources.onReady(init);
 
