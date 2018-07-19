@@ -65,15 +65,15 @@ generateEnemy(level);
 
 function checkCollisions() {
   allEnemies.forEach(enemyBug => {
-    let aRange = player.x - 50;
-    let bRange = player.x + 40;
+    let aRange = player.x - 60;
+    let bRange = player.x + 60;
     if (
       enemyBug.x >= aRange &&
       enemyBug.x <= bRange &&
-      enemyBug.y === player.y
+      enemyBug.y === player.y - 20
     ) {
       player.x = player.dx * 3;
-      player.y = player.dy * 5 - 20;
+      player.y = player.dy * 5;
       lives--;
       player.livesTracker();
     }
@@ -215,15 +215,15 @@ function clearEnemies() {
 class Player extends Entity {
   constructor() {
     super();
-    this.sprite = "images/char-boy.png";
+    this.sprite = this.randomSprite();
     this.x = this.dx * 3;
-    this.y = this.dy * 5 - 20;
+    this.y = this.dy * 5;
   }
   handleInput(inputKey) {
     if (allowMove === true) {
       switch (inputKey) {
         case "up":
-          if (this.y > -20) {
+          if (this.y > 0) {
             this.y -= this.dy;
             this.handleComplete();
           }
@@ -252,8 +252,11 @@ class Player extends Entity {
     }
   }
   handleComplete() {
-    if (this.y === -20) {
-      this.reset();
+    if (this.y === 0) {
+      setTimeout(() => {
+        this.reset();
+      }, 200);
+
       clearEnemies();
       if (level < 10) {
         level++;
@@ -288,7 +291,18 @@ class Player extends Entity {
   }
   reset() {
     this.x = this.dx * 3;
-    this.y = this.dy * 5 - 20;
+    this.y = this.dy * 5;
+  }
+  randomSprite() {
+    let playerSprites = [
+      "images/sub-pink.png",
+      "images/sub-yellow.png",
+      "images/sub-orange.png",
+      "images/sub-green.png",
+      "images/sub-purple.png",
+      "images/sub-blue.png"
+    ];
+    return playerSprites[Math.floor(Math.random() * playerSprites.length)];
   }
   handleModal() {
     let modal = document.querySelector(".modal");

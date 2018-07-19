@@ -184,7 +184,13 @@ var Engine = (function(global) {
     "images/water-two.png",
     "images/water-three.png",
     "images/ocean-bottom.png",
-    "images/ocean-bottop.png"
+    "images/ocean-bottop.png",
+    "images/sub-pink.png",
+    "images/sub-yellow.png",
+    "images/sub-orange.png",
+    "images/sub-green.png",
+    "images/sub-purple.png",
+    "images/sub-blue.png"
   ]);
   Resources.onReady(init);
 
