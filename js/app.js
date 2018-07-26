@@ -29,11 +29,153 @@ function newGame() {
   lives = 3;
   level = 1;
   player.reset();
+  player.score = 0;
   clearEnemies();
   generateEnemy(level);
   player.livesTracker();
+  player.updateScore();
   allowMove = true;
 }
+
+class Player extends Entity {
+  constructor() {
+    super();
+    this.sprite = this.randomSprite();
+    this.x = this.dx * 3;
+    this.y = this.dy * 5;
+    this.score = 0;
+  }
+  handleInput(inputKey) {
+    if (allowMove === true) {
+      switch (inputKey) {
+        case "up":
+          if (this.y > 0) {
+            this.y -= this.dy;
+            this.handleComplete();
+          }
+          break;
+        case "down":
+          if (this.y < 395) {
+            this.y += this.dy;
+            this.handleComplete();
+          }
+          break;
+        case "left":
+          if (this.x > 0) {
+            this.x -= this.dx;
+            this.handleComplete();
+          }
+          break;
+        case "right":
+          if (this.x < 604) {
+            this.x += this.dx;
+            this.handleComplete();
+          }
+          break;
+        default:
+          break;
+      }
+    }
+  }
+  updateScore() {
+    document.querySelector(".score").innerText = this.score;
+  }
+  handleComplete() {
+    if (this.y === 0) {
+      setTimeout(() => {
+        this.reset();
+      }, 200);
+
+      clearEnemies();
+      if (level < 10) {
+        this.score += 1000;
+        this.updateScore();
+        level++;
+        generateEnemy(level);
+      } else if (level === 10) {
+        generateEnemy(level);
+        clearEnemies();
+        this.handleModal();
+      }
+    }
+  }
+
+  livesTracker() {
+    if (lives > 0) {
+      for (let i = lives; i > 0; i--) {
+        lifeInnerHTML += `
+      <div class="life-heart"><img class="heart-image" alt="heart icon" src="images/Heart.png"></div>
+      `;
+      }
+    } else {
+      clearEnemies();
+      allowMove = false;
+      this.handleModal();
+    }
+
+    this.lifeUpdater();
+    lifeInnerHTML = "";
+  }
+  lifeUpdater() {
+    let livesDiv = document.querySelector(".lives-container");
+    livesDiv.innerHTML = lifeInnerHTML;
+  }
+  reset() {
+    this.x = this.dx * 3;
+    this.y = this.dy * 5;
+  }
+
+  randomSprite() {
+    let playerSprites = [
+      "images/sub-pink.png",
+      "images/sub-yellow.png",
+      "images/sub-orange.png",
+      "images/sub-green.png",
+      "images/sub-purple.png",
+      "images/sub-blue.png"
+    ];
+    return playerSprites[Math.floor(Math.random() * playerSprites.length)];
+  }
+  handleModal() {
+    let modal = document.querySelector(".modal");
+    if (lives == 0) {
+      modal.style.display = "flex";
+      modal.innerHTML = `
+      <div class="modal-content">
+        <span class="close"><i class="fa fa-times"></i></span>
+        <div class="modal-text">
+          <h2 class="lose">Out Of Lives</h2>
+          <h3>You made it to Level ${level}.</h3>
+        </div>
+        <button class="try-again">Try Again</button>
+        `;
+
+      let tryAgain = document.getElementsByClassName("try-again")[0];
+      tryAgain.onclick = () => {
+        modal.style.display = "none";
+        newGame();
+      };
+    } else if (level == 10 && lives > 0) {
+      modal.style.display = "flex";
+      modal.innerHTML = `
+      <div class="modal-content">
+        <span class="close"><i class="fa fa-times"></i></span>
+        <div class="modal-text">
+          <h2 class="win">Congratulations</h2>
+          <h3>You made it to level 10 with ${lives} lives left.</h3>
+        </div>
+        <button class="try-again">Play Again</button>
+        `;
+
+      let tryAgain = document.getElementsByClassName("try-again")[0];
+      tryAgain.onclick = () => {
+        modal.style.display = "none";
+        newGame();
+      };
+    }
+  }
+}
+
 /*
 We want range of X values to be between 0 and this.dx*4
 We want range of Y values to be between this.dy - 20 and this.dy * 3 - 20;
@@ -43,6 +185,7 @@ class Enemy extends Entity {
   constructor(x, y, speed) {
     super();
     this.sprite = "images/octopus.png";
+    this.backwardSprite = "images/octopus.png";
     this.x = x;
     this.y = y;
     this.speed = speed;
@@ -86,6 +229,8 @@ function checkCollisions() {
       player.x = player.dx * 3;
       player.y = player.dy * 5;
       lives--;
+      player.score -= 500;
+      player.updateScore();
       player.livesTracker();
     }
   });
@@ -103,25 +248,6 @@ function checkCollisions() {
       player.livesTracker();
     }
   });
-}
-
-class Gem extends Entity {
-  constructor() {
-    super();
-    //this.x = player.dx * 1;
-    //this.y = player.dy * 5 - 20;
-    this.x = -100;
-    this.y = -100;
-    this.sprite = this.generateItem();
-  }
-  generateItem() {
-    let itemSprites = [
-      "images/bluegem.png",
-      "images/orangegem.png",
-      "images/greengem.png"
-    ];
-    return itemSprites[Math.floor(Math.random() * itemSprites.length)];
-  }
 }
 
 function generateEnemy(level) {
@@ -295,138 +421,6 @@ function clearEnemies() {
 // This class requires an update(), render() and
 // a handleInput() method.
 
-class Player extends Entity {
-  constructor() {
-    super();
-    this.sprite = this.randomSprite();
-    this.x = this.dx * 3;
-    this.y = this.dy * 5;
-  }
-  handleInput(inputKey) {
-    if (allowMove === true) {
-      switch (inputKey) {
-        case "up":
-          if (this.y > 0) {
-            this.y -= this.dy;
-            this.handleComplete();
-          }
-          break;
-        case "down":
-          if (this.y < 395) {
-            this.y += this.dy;
-            this.handleComplete();
-          }
-          break;
-        case "left":
-          if (this.x > 0) {
-            this.x -= this.dx;
-            this.handleComplete();
-          }
-          break;
-        case "right":
-          if (this.x < 604) {
-            this.x += this.dx;
-            this.handleComplete();
-          }
-          break;
-        default:
-          break;
-      }
-    }
-  }
-  handleComplete() {
-    if (this.y === 0) {
-      setTimeout(() => {
-        this.reset();
-      }, 200);
-
-      clearEnemies();
-      if (level < 10) {
-        level++;
-        generateEnemy(level);
-      } else if (level === 10) {
-        generateEnemy(level);
-        clearEnemies();
-        this.handleModal();
-      }
-    }
-  }
-
-  livesTracker() {
-    if (lives > 0) {
-      for (let i = lives; i > 0; i--) {
-        lifeInnerHTML += `
-      <div class="life-heart"><img class="heart-image" alt="heart icon" src="images/Heart.png"></div>
-      `;
-      }
-    } else {
-      clearEnemies();
-      allowMove = false;
-      this.handleModal();
-    }
-
-    this.lifeUpdater();
-    lifeInnerHTML = "";
-  }
-  lifeUpdater() {
-    let livesDiv = document.querySelector(".lives-container");
-    livesDiv.innerHTML = lifeInnerHTML;
-  }
-  reset() {
-    this.x = this.dx * 3;
-    this.y = this.dy * 5;
-  }
-  randomSprite() {
-    let playerSprites = [
-      "images/sub-pink.png",
-      "images/sub-yellow.png",
-      "images/sub-orange.png",
-      "images/sub-green.png",
-      "images/sub-purple.png",
-      "images/sub-blue.png"
-    ];
-    return playerSprites[Math.floor(Math.random() * playerSprites.length)];
-  }
-  handleModal() {
-    let modal = document.querySelector(".modal");
-    if (lives == 0 && level != 10) {
-      modal.style.display = "flex";
-      modal.innerHTML = `
-      <div class="modal-content">
-        <span class="close"><i class="fa fa-times"></i></span>
-        <div class="modal-text">
-          <h2 class="lose">Out Of Lives</h2>
-          <h3>You made it to Level ${level}.</h3>
-        </div>
-        <button class="try-again">Try Again</button>
-        `;
-
-      let tryAgain = document.getElementsByClassName("try-again")[0];
-      tryAgain.onclick = () => {
-        modal.style.display = "none";
-        newGame();
-      };
-    } else if (level == 10 && lives > 0) {
-      modal.style.display = "flex";
-      modal.innerHTML = `
-      <div class="modal-content">
-        <span class="close"><i class="fa fa-times"></i></span>
-        <div class="modal-text">
-          <h2 class="win">Congratulations</h2>
-          <h3>You made it to level 10 with ${lives} lives left.</h3>
-        </div>
-        <button class="try-again">Play Again</button>
-        `;
-
-      let tryAgain = document.getElementsByClassName("try-again")[0];
-      tryAgain.onclick = () => {
-        modal.style.display = "none";
-        newGame();
-      };
-    }
-  }
-}
-
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method. You don't need to modify this.
 document.addEventListener("keyup", keyupListener);
@@ -441,6 +435,27 @@ function keyupListener(e) {
 
   player.handleInput(allowedKeys[e.keyCode]);
 }
+
+class Gem extends Entity {
+  constructor() {
+    super();
+    //this.x = player.dx * 1;
+    //this.y = player.dy * 5 - 20;
+    this.x = -100;
+    this.y = -100;
+    this.sprite = this.generateItem();
+  }
+  generateItem() {
+    let itemSprites = [
+      "images/bluegem.png",
+      "images/orangegem.png",
+      "images/greengem.png"
+    ];
+    return itemSprites[Math.floor(Math.random() * itemSprites.length)];
+  }
+}
+
 const player = new Player();
 const gem = new Gem();
+
 startGame();
