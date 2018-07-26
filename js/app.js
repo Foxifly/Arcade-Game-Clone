@@ -60,10 +60,10 @@ class Enemy extends Entity {
   }
 
   updateBackwards(dt) {
-    if (this.x >= 700) {
-      let thisIndex = allEnemies.indexOf(this);
-      allEnemies.splice(thisIndex, 1);
-      generateNewEnemy();
+    if (this.x <= -100) {
+      let thisIndex = allBackwardEnemies.indexOf(this);
+      allBackwardEnemies.splice(thisIndex, 1);
+      generateNewBackwardEnemy();
     } else {
       this.x -= Math.floor(dt * this.speed * 75);
     }
@@ -76,6 +76,20 @@ generateEnemy(level);
 
 function checkCollisions() {
   allEnemies.forEach(enemyBug => {
+    let aRange = player.x - 60;
+    let bRange = player.x + 60;
+    if (
+      enemyBug.x >= aRange &&
+      enemyBug.x <= bRange &&
+      enemyBug.y === player.y - 20
+    ) {
+      player.x = player.dx * 3;
+      player.y = player.dy * 5;
+      lives--;
+      player.livesTracker();
+    }
+  });
+  allBackwardEnemies.forEach(enemyBug => {
     let aRange = player.x - 60;
     let bRange = player.x + 60;
     if (
@@ -112,6 +126,7 @@ class Gem extends Entity {
 
 function generateEnemy(level) {
   let x = -100;
+  let backwardx = 650;
   let levelP = document.querySelector(".level");
 
   switch (level) {
@@ -121,6 +136,12 @@ function generateEnemy(level) {
         let y = 83 * yRandom - 20;
         let speed = Math.floor(Math.random() * 4 + 1);
         allEnemies.push(new Enemy(x, y, speed));
+      }
+      for (let i = 0; i < 3; i++) {
+        let yRandom = Math.floor(Math.random() * 3) + 1;
+        let y = 83 * yRandom - 20;
+        let speed = Math.floor(Math.random() * 4 + 1);
+        allBackwardEnemies.push(new Enemy(backwardx, y, speed));
       }
       levelP.innerText = "Level 1";
       break;
@@ -214,6 +235,13 @@ function generateNewEnemy() {
   let y = 83 * yRandom - 20;
   let x = -100;
   allEnemies.push(new Enemy(x, y, speed));
+}
+function generateNewBackwardEnemy() {
+  let speed = Math.floor(Math.random() * 6 + 1);
+  let yRandom = Math.floor(Math.random() * 3) + 1;
+  let y = 83 * yRandom - 20;
+  let x = 650;
+  allBackwardEnemies.push(new Enemy(x, y, speed));
 }
 
 function clearEnemies() {

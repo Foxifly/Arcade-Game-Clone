@@ -80,6 +80,7 @@ var Engine = (function(global) {
      */
   function update(dt) {
     updateEntities(dt);
+    updateBackwardEnemies(dt);
     checkCollisions();
   }
 
@@ -158,6 +159,9 @@ var Engine = (function(global) {
          * the render function you have defined.
          */
     allEnemies.forEach(function(enemy) {
+      enemy.render();
+    });
+    allBackwardEnemies.forEach(function(enemy) {
       enemy.render();
     });
     gem.render();
