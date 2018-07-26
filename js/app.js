@@ -58,9 +58,20 @@ class Enemy extends Entity {
       this.x += Math.floor(dt * this.speed * 75);
     }
   }
+
+  updateBackwards(dt) {
+    if (this.x >= 700) {
+      let thisIndex = allEnemies.indexOf(this);
+      allEnemies.splice(thisIndex, 1);
+      generateNewEnemy();
+    } else {
+      this.x -= Math.floor(dt * this.speed * 75);
+    }
+  }
 }
 
 let allEnemies = [];
+let allBackwardEnemies = [];
 generateEnemy(level);
 
 function checkCollisions() {

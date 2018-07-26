@@ -45,6 +45,7 @@ var Engine = (function(global) {
          * our update function since it may be used for smooth animation.
          */
     update(dt);
+
     render();
 
     /* Set our lastTime variable which is used to determine the time delta
@@ -93,9 +94,15 @@ var Engine = (function(global) {
     allEnemies.forEach(function(enemy) {
       enemy.update(dt);
     });
+
     //player.update();
   }
 
+  function updateBackwardEnemies(dt) {
+    allBackwardEnemies.forEach(function(enemy) {
+      enemy.updateBackwards(dt);
+    });
+  }
   /* This function initially draws the "game level", it will then call
      * the renderEntities function. Remember, this function is called every
      * game tick (or loop of the game engine) because that's how games work -
