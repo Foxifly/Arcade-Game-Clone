@@ -32,25 +32,25 @@ class Player extends Entity {
       case "up":
         if (this.y > 0) {
           this.y -= this.dy;
-          this.handleComplete();
+          this.update();
         }
         break;
       case "down":
         if (this.y < 395) {
           this.y += this.dy;
-          this.handleComplete();
+          this.update();
         }
         break;
       case "left":
         if (this.x > 0) {
           this.x -= this.dx;
-          this.handleComplete();
+          this.update();
         }
         break;
       case "right":
         if (this.x < 604) {
           this.x += this.dx;
-          this.handleComplete();
+          this.update();
         }
         break;
       default:
@@ -61,12 +61,11 @@ class Player extends Entity {
   updateScore() {
     document.querySelector(".score").innerText = this.score;
   }
-  handleComplete() {
+  update() {
     if (this.y === 0) {
       setTimeout(() => {
         this.reset();
       }, 200);
-
       clearEnemies();
       if (level < 10) {
         this.score += 1000;
@@ -410,12 +409,7 @@ function clearEnemies() {
   allEnemies = [];
   allBackwardEnemies = [];
 }
-// Now write your own player class
-// This class requires an update(), render() and
-// a handleInput() method.
 
-// This listens for key presses and sends the keys to your
-// Player.handleInput() method. You don't need to modify this.
 document.addEventListener("keyup", keyupListener);
 
 function keyupListener(e) {
@@ -428,6 +422,14 @@ function keyupListener(e) {
 
   player.handleInput(allowedKeys[e.keyCode]);
 }
+
+function startGame() {
+  player.livesTracker();
+}
+const player = new Player();
+
+
+startGame();
 
 /**
 TODO: Create random gem placements for more points
@@ -452,10 +454,4 @@ finish this section. I really need to turn in this project.
   }
 }*/
 
-function startGame() {
-  player.livesTracker();
-}
-const player = new Player();
 //const gem = new Gem();
-
-startGame();
