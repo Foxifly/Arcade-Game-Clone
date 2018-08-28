@@ -1,10 +1,3 @@
-// Enemies our player must avoid
-
-// Variables applied to each of our instances go here,
-// we've provided one for you to get started
-
-// The image/sprite for our enemies, this uses
-// a helper we've provided to easily load images
 let level = 1;
 let lives = 3;
 let lifeInnerHTML = ``;
@@ -20,21 +13,9 @@ class Entity {
   render() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
   }
-}
-
-function startGame() {
-  player.livesTracker();
-}
-function newGame() {
-  lives = 3;
-  level = 1;
-  player.reset();
-  player.score = 0;
-  clearEnemies();
-  generateEnemy(level);
-  player.livesTracker();
-  player.updateScore();
-  allowMove = true;
+  smallRender() {
+    ctx.drawImage(Resources.get(this.sprite), this.x, this.y, 50.5, 85.5);
+  }
 }
 
 class Player extends Entity {
@@ -48,32 +29,32 @@ class Player extends Entity {
   handleInput(inputKey) {
     if (allowMove === true) {
       switch (inputKey) {
-        case "up":
-          if (this.y > 0) {
-            this.y -= this.dy;
-            this.handleComplete();
-          }
-          break;
-        case "down":
-          if (this.y < 395) {
-            this.y += this.dy;
-            this.handleComplete();
-          }
-          break;
-        case "left":
-          if (this.x > 0) {
-            this.x -= this.dx;
-            this.handleComplete();
-          }
-          break;
-        case "right":
-          if (this.x < 604) {
-            this.x += this.dx;
-            this.handleComplete();
-          }
-          break;
-        default:
-          break;
+      case "up":
+        if (this.y > 0) {
+          this.y -= this.dy;
+          this.handleComplete();
+        }
+        break;
+      case "down":
+        if (this.y < 395) {
+          this.y += this.dy;
+          this.handleComplete();
+        }
+        break;
+      case "left":
+        if (this.x > 0) {
+          this.x -= this.dx;
+          this.handleComplete();
+        }
+        break;
+      case "right":
+        if (this.x < 604) {
+          this.x += this.dx;
+          this.handleComplete();
+        }
+        break;
+      default:
+        break;
       }
     }
   }
@@ -153,7 +134,7 @@ class Player extends Entity {
       let tryAgain = document.getElementsByClassName("try-again")[0];
       tryAgain.onclick = () => {
         modal.style.display = "none";
-        newGame();
+        this.newGame();
       };
     } else if (level == 10 && lives > 0) {
       modal.style.display = "flex";
@@ -170,9 +151,20 @@ class Player extends Entity {
       let tryAgain = document.getElementsByClassName("try-again")[0];
       tryAgain.onclick = () => {
         modal.style.display = "none";
-        newGame();
+        this.newGame();
       };
     }
+  }
+  newGame() {
+    lives = 3;
+    level = 1;
+    player.reset();
+    player.score = 0;
+    clearEnemies();
+    generateEnemy(level);
+    player.livesTracker();
+    player.updateScore();
+    allowMove = true;
   }
 }
 
@@ -256,145 +248,145 @@ function generateEnemy(level) {
   let levelP = document.querySelector(".level");
 
   switch (level) {
-    case 1:
-      for (let i = 0; i < 3; i++) {
-        let yRandom = Math.floor(Math.random() * 3) + 1;
-        let y = 83 * yRandom - 20;
-        let speed = Math.floor(Math.random() * 4 + 1);
-        allEnemies.push(new Enemy(x, y, speed));
-      }
+  case 1:
+    for (let i = 0; i < 3; i++) {
+      let yRandom = Math.floor(Math.random() * 3) + 1;
+      let y = 83 * yRandom - 20;
+      let speed = Math.floor(Math.random() * 4 + 1);
+      allEnemies.push(new Enemy(x, y, speed));
+    }
 
-      levelP.innerText = "Level 1";
-      break;
-    case 2:
-      for (let i = 0; i < 3; i++) {
-        let yRandom = Math.floor(Math.random() * 3) + 1;
-        let y = 83 * yRandom - 20;
-        let speed = Math.floor(Math.random() * 5 + 1);
-        allEnemies.push(new Enemy(x, y, speed));
-      }
-      levelP.innerText = "Level 2";
-      break;
-    case 3:
-      for (let i = 0; i < 4; i++) {
-        let yRandom = Math.floor(Math.random() * 3) + 1;
-        let y = 83 * yRandom - 20;
-        let speed = Math.floor(Math.random() * 6 + 1);
-        allEnemies.push(new Enemy(x, y, speed));
-      }
-      for (let i = 0; i < 1; i++) {
-        let yRandom = Math.floor(Math.random() * 3) + 1;
-        let y = 83 * yRandom - 20;
-        let speed = Math.floor(Math.random() * 4 + 1);
-        allBackwardEnemies.push(new Enemy(backwardx, y, speed));
-      }
-      levelP.innerText = "Level 3";
-      break;
-    case 4:
-      for (let i = 0; i < 4; i++) {
-        let yRandom = Math.floor(Math.random() * 3) + 1;
-        let y = 83 * yRandom - 20;
-        let speed = Math.floor(Math.random() * 6 + 2);
-        allEnemies.push(new Enemy(x, y, speed));
-      }
-      for (let i = 0; i < 1; i++) {
-        let yRandom = Math.floor(Math.random() * 3) + 1;
-        let y = 83 * yRandom - 20;
-        let speed = Math.floor(Math.random() * 5 + 1);
-        allBackwardEnemies.push(new Enemy(backwardx, y, speed));
-      }
-      levelP.innerText = "Level 4";
-      break;
-    case 5:
-      for (let i = 0; i < 4; i++) {
-        let yRandom = Math.floor(Math.random() * 3) + 1;
-        let y = 83 * yRandom - 20;
-        let speed = Math.floor(Math.random() * 7 + 2);
-        allEnemies.push(new Enemy(x, y, speed));
-      }
-      for (let i = 0; i < 2; i++) {
-        let yRandom = Math.floor(Math.random() * 3) + 1;
-        let y = 83 * yRandom - 20;
-        let speed = Math.floor(Math.random() * 4 + 3);
-        allBackwardEnemies.push(new Enemy(backwardx, y, speed));
-      }
-      levelP.innerText = "Level 5";
-      break;
-    case 6:
-      for (let i = 0; i < 5; i++) {
-        let yRandom = Math.floor(Math.random() * 3) + 1;
-        let y = 83 * yRandom - 20;
-        let speed = Math.floor(Math.random() * 7 + 3);
-        allEnemies.push(new Enemy(x, y, speed));
-      }
-      for (let i = 0; i < 3; i++) {
-        let yRandom = Math.floor(Math.random() * 3) + 1;
-        let y = 83 * yRandom - 20;
-        let speed = Math.floor(Math.random() * 4 + 3);
-        allBackwardEnemies.push(new Enemy(backwardx, y, speed));
-      }
-      levelP.innerText = "Level 6";
-      break;
-    case 7:
-      for (let i = 0; i < 5; i++) {
-        let yRandom = Math.floor(Math.random() * 3) + 1;
-        let y = 83 * yRandom - 20;
-        let speed = Math.floor(Math.random() * 7 + 4);
-        allEnemies.push(new Enemy(x, y, speed));
-      }
-      for (let i = 0; i < 4; i++) {
-        let yRandom = Math.floor(Math.random() * 3) + 1;
-        let y = 83 * yRandom - 20;
-        let speed = Math.floor(Math.random() * 5 + 3);
-        allBackwardEnemies.push(new Enemy(backwardx, y, speed));
-      }
-      levelP.innerText = "Level 7";
-      break;
-    case 8:
-      for (let i = 0; i < 6; i++) {
-        let yRandom = Math.floor(Math.random() * 3) + 1;
-        let y = 83 * yRandom - 20;
-        let speed = Math.floor(Math.random() * 8 + 4);
-        allEnemies.push(new Enemy(x, y, speed));
-      }
-      for (let i = 0; i < 5; i++) {
-        let yRandom = Math.floor(Math.random() * 3) + 1;
-        let y = 83 * yRandom - 20;
-        let speed = Math.floor(Math.random() * 6 + 3);
-        allBackwardEnemies.push(new Enemy(backwardx, y, speed));
-      }
-      levelP.innerText = "Level 8";
-      break;
-    case 9:
-      for (let i = 0; i < 7; i++) {
-        let yRandom = Math.floor(Math.random() * 3) + 1;
-        let y = 83 * yRandom - 20;
-        let speed = Math.floor(Math.random() * 9 + 4);
-        allEnemies.push(new Enemy(x, y, speed));
-      }
-      for (let i = 0; i < 5; i++) {
-        let yRandom = Math.floor(Math.random() * 3) + 1;
-        let y = 83 * yRandom - 20;
-        let speed = Math.floor(Math.random() * 6 + 3);
-        allBackwardEnemies.push(new Enemy(backwardx, y, speed));
-      }
-      levelP.innerText = "Level 9";
-      break;
-    case 10:
-      for (let i = 0; i < 7; i++) {
-        let yRandom = Math.floor(Math.random() * 3) + 1;
-        let y = 83 * yRandom - 20;
-        let speed = Math.floor(Math.random() * 10 + 5);
-        allEnemies.push(new Enemy(x, y, speed));
-      }
-      for (let i = 0; i < 7; i++) {
-        let yRandom = Math.floor(Math.random() * 3) + 1;
-        let y = 83 * yRandom - 20;
-        let speed = Math.floor(Math.random() * 7 + 3);
-        allBackwardEnemies.push(new Enemy(backwardx, y, speed));
-      }
-      levelP.innerText = "Level 10";
-      break;
+    levelP.innerText = "Level 1";
+    break;
+  case 2:
+    for (let i = 0; i < 3; i++) {
+      let yRandom = Math.floor(Math.random() * 3) + 1;
+      let y = 83 * yRandom - 20;
+      let speed = Math.floor(Math.random() * 5 + 1);
+      allEnemies.push(new Enemy(x, y, speed));
+    }
+    levelP.innerText = "Level 2";
+    break;
+  case 3:
+    for (let i = 0; i < 4; i++) {
+      let yRandom = Math.floor(Math.random() * 3) + 1;
+      let y = 83 * yRandom - 20;
+      let speed = Math.floor(Math.random() * 6 + 1);
+      allEnemies.push(new Enemy(x, y, speed));
+    }
+    for (let i = 0; i < 1; i++) {
+      let yRandom = Math.floor(Math.random() * 3) + 1;
+      let y = 83 * yRandom - 20;
+      let speed = Math.floor(Math.random() * 4 + 1);
+      allBackwardEnemies.push(new Enemy(backwardx, y, speed));
+    }
+    levelP.innerText = "Level 3";
+    break;
+  case 4:
+    for (let i = 0; i < 4; i++) {
+      let yRandom = Math.floor(Math.random() * 3) + 1;
+      let y = 83 * yRandom - 20;
+      let speed = Math.floor(Math.random() * 6 + 2);
+      allEnemies.push(new Enemy(x, y, speed));
+    }
+    for (let i = 0; i < 1; i++) {
+      let yRandom = Math.floor(Math.random() * 3) + 1;
+      let y = 83 * yRandom - 20;
+      let speed = Math.floor(Math.random() * 5 + 1);
+      allBackwardEnemies.push(new Enemy(backwardx, y, speed));
+    }
+    levelP.innerText = "Level 4";
+    break;
+  case 5:
+    for (let i = 0; i < 4; i++) {
+      let yRandom = Math.floor(Math.random() * 3) + 1;
+      let y = 83 * yRandom - 20;
+      let speed = Math.floor(Math.random() * 7 + 2);
+      allEnemies.push(new Enemy(x, y, speed));
+    }
+    for (let i = 0; i < 2; i++) {
+      let yRandom = Math.floor(Math.random() * 3) + 1;
+      let y = 83 * yRandom - 20;
+      let speed = Math.floor(Math.random() * 4 + 3);
+      allBackwardEnemies.push(new Enemy(backwardx, y, speed));
+    }
+    levelP.innerText = "Level 5";
+    break;
+  case 6:
+    for (let i = 0; i < 5; i++) {
+      let yRandom = Math.floor(Math.random() * 3) + 1;
+      let y = 83 * yRandom - 20;
+      let speed = Math.floor(Math.random() * 7 + 3);
+      allEnemies.push(new Enemy(x, y, speed));
+    }
+    for (let i = 0; i < 3; i++) {
+      let yRandom = Math.floor(Math.random() * 3) + 1;
+      let y = 83 * yRandom - 20;
+      let speed = Math.floor(Math.random() * 4 + 3);
+      allBackwardEnemies.push(new Enemy(backwardx, y, speed));
+    }
+    levelP.innerText = "Level 6";
+    break;
+  case 7:
+    for (let i = 0; i < 5; i++) {
+      let yRandom = Math.floor(Math.random() * 3) + 1;
+      let y = 83 * yRandom - 20;
+      let speed = Math.floor(Math.random() * 7 + 4);
+      allEnemies.push(new Enemy(x, y, speed));
+    }
+    for (let i = 0; i < 4; i++) {
+      let yRandom = Math.floor(Math.random() * 3) + 1;
+      let y = 83 * yRandom - 20;
+      let speed = Math.floor(Math.random() * 5 + 3);
+      allBackwardEnemies.push(new Enemy(backwardx, y, speed));
+    }
+    levelP.innerText = "Level 7";
+    break;
+  case 8:
+    for (let i = 0; i < 6; i++) {
+      let yRandom = Math.floor(Math.random() * 3) + 1;
+      let y = 83 * yRandom - 20;
+      let speed = Math.floor(Math.random() * 8 + 4);
+      allEnemies.push(new Enemy(x, y, speed));
+    }
+    for (let i = 0; i < 5; i++) {
+      let yRandom = Math.floor(Math.random() * 3) + 1;
+      let y = 83 * yRandom - 20;
+      let speed = Math.floor(Math.random() * 6 + 3);
+      allBackwardEnemies.push(new Enemy(backwardx, y, speed));
+    }
+    levelP.innerText = "Level 8";
+    break;
+  case 9:
+    for (let i = 0; i < 7; i++) {
+      let yRandom = Math.floor(Math.random() * 3) + 1;
+      let y = 83 * yRandom - 20;
+      let speed = Math.floor(Math.random() * 9 + 4);
+      allEnemies.push(new Enemy(x, y, speed));
+    }
+    for (let i = 0; i < 5; i++) {
+      let yRandom = Math.floor(Math.random() * 3) + 1;
+      let y = 83 * yRandom - 20;
+      let speed = Math.floor(Math.random() * 6 + 3);
+      allBackwardEnemies.push(new Enemy(backwardx, y, speed));
+    }
+    levelP.innerText = "Level 9";
+    break;
+  case 10:
+    for (let i = 0; i < 7; i++) {
+      let yRandom = Math.floor(Math.random() * 3) + 1;
+      let y = 83 * yRandom - 20;
+      let speed = Math.floor(Math.random() * 10 + 5);
+      allEnemies.push(new Enemy(x, y, speed));
+    }
+    for (let i = 0; i < 7; i++) {
+      let yRandom = Math.floor(Math.random() * 3) + 1;
+      let y = 83 * yRandom - 20;
+      let speed = Math.floor(Math.random() * 7 + 3);
+      allBackwardEnemies.push(new Enemy(backwardx, y, speed));
+    }
+    levelP.innerText = "Level 10";
+    break;
   }
 }
 
@@ -405,6 +397,7 @@ function generateNewEnemy() {
   let x = -100;
   allEnemies.push(new Enemy(x, y, speed));
 }
+
 function generateNewBackwardEnemy() {
   let speed = Math.floor(Math.random() * 6 + 1);
   let yRandom = Math.floor(Math.random() * 3) + 1;
@@ -436,13 +429,17 @@ function keyupListener(e) {
   player.handleInput(allowedKeys[e.keyCode]);
 }
 
-class Gem extends Entity {
+/**
+TODO: Create random gem placements for more points
+I have started the framework for it, but I did not get the chance to
+finish this section. I really need to turn in this project.
+*/
+
+/*class Gem extends Entity {
   constructor() {
     super();
-    //this.x = player.dx * 1;
-    //this.y = player.dy * 5 - 20;
-    this.x = -100;
-    this.y = -100;
+    this.x = player.x;
+    this.y = player.y;
     this.sprite = this.generateItem();
   }
   generateItem() {
@@ -453,9 +450,12 @@ class Gem extends Entity {
     ];
     return itemSprites[Math.floor(Math.random() * itemSprites.length)];
   }
-}
+}*/
 
+function startGame() {
+  player.livesTracker();
+}
 const player = new Player();
-const gem = new Gem();
+//const gem = new Gem();
 
 startGame();

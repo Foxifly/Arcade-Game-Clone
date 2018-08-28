@@ -164,7 +164,7 @@ var Engine = (function(global) {
     allBackwardEnemies.forEach(function(enemy) {
       enemy.render();
     });
-    gem.render();
+    gem.smallRender();
     player.render();
   }
 
